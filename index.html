@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikSave - TikTok動画ダウンローダー</title>
+    <meta name="description" content="TikTok動画を簡単にダウンロード。ウォーターマークなしで保存可能。スマホ対応。">
+    <meta name="theme-color" content="#0f0f1a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Animated background particles -->
+    <div class="bg-particles" id="particles"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                </div>
+                <h1 class="logo-text">TikSave</h1>
+            </div>
+            <p class="tagline">TikTok動画を簡単ダウンロード</p>
+        </header>
+
+        <!-- Main Input Section -->
+        <main class="main">
+            <div class="input-card">
+                <h2 class="input-title">動画URLを貼り付け</h2>
+                <p class="input-desc">TikTokの共有リンクをペーストするだけ</p>
+
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                        <input type="url" id="urlInput" placeholder="https://www.tiktok.com/@user/video/..."
+                            autocomplete="off" spellcheck="false">
+                        <button class="paste-btn" id="pasteBtn" title="クリップボードから貼り付け">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="download-btn" id="downloadBtn">
+                        <span class="btn-text">ダウンロード</span>
+                        <div class="btn-loader" id="btnLoader">
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-msg" id="errorMsg"></div>
+            </div>
+
+            <!-- Result Section -->
+            <div class="result-card" id="resultCard">
+                <div class="video-preview">
+                    <img id="thumbnail" src="" alt="動画サムネイル">
+                    <div class="video-duration" id="videoDuration"></div>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title" id="videoTitle"></h3>
+                    <p class="video-author" id="videoAuthor"></p>
+                    <div class="video-stats">
+                        <span class="stat" id="videoPlays">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            <span></span>
+                        </span>
+                        <span class="stat" id="videoLikes">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                            <span></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="download-options">
+                    <a class="dl-btn dl-btn-primary" id="dlNoWatermark" href="#" target="_blank">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        ウォーターマークなし
+                    </a>
+                    <a class="dl-btn dl-btn-secondary" id="dlWithWatermark" href="#" target="_blank">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        ウォーターマークあり
+                    </a>
+                    <a class="dl-btn dl-btn-audio" id="dlAudio" href="#" target="_blank">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                        音声のみ (MP3)
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <!-- How to use -->
+        <section class="how-to">
+            <h2 class="section-title">使い方</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h3>URLをコピー</h3>
+                        <p>TikTokアプリで「共有」→「リンクをコピー」</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h3>URLを貼り付け</h3>
+                        <p>上の入力欄にURLをペースト</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h3>ダウンロード</h3>
+                        <p>お好みの形式で動画を保存</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>TikSave &copy; 2026 — 個人利用のみ</p>
+            <p class="footer-note">TikTokの商標はByteDance Ltd.に帰属します</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
